@@ -104,10 +104,10 @@ if has('nvim')
     call plug#begin("~/AppData/Local/nvim/plugged")
     Plug 'kyazdani42/nvim-web-devicons'
     Plug 'kyazdani42/nvim-tree.lua'
-    Plug 'vim-airline/vim-airline'
-    Plug 'vim-airline/vim-airline-themes'
 
-    Plug 'airblade/vim-gitgutter'
+    Plug 'feline-nvim/feline.nvim'
+
+    Plug 'lewis6991/gitsigns.nvim'
 
     Plug 'nvim-lua/plenary.nvim'
     Plug 'nvim-telescope/telescope.nvim'
@@ -118,11 +118,8 @@ if has('nvim')
 
     Plug 'neovim/nvim-lspconfig'
 
-    "Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-    "Plug 'zchee/deoplete-jedi'
     "Plug 'scrooloose/nerdcommenter'
     "Plug 'sbdchd/neoformat'
-    "Plug 'davidhalter/jedi-vim'
     "Plug 'beeender/Comrade'
 
     Plug 'hrsh7th/cmp-nvim-lsp'
@@ -151,12 +148,6 @@ if has('nvim')
     else
         let g:python3_host_prog=expand("python3")
     endif
-    "let g:deoplete#enable_at_startup=1
-    "let g:deoplete#disable_auto_complete=0
-    "inoremap <expr> <C-o> deoplete#manual_complete()
-    "autocmd FileType TelescopePrompt call deoplete#custom#buffer_option('auto_complete', v:false)
-    "let g:jedi#completions_enabled = 0
-    "let g:jedi#show_call_signatures = "0"
 
     nnoremap <leader>ff <cmd>Telescope find_files<cr>
     nnoremap <leader>fg <cmd>Telescope live_grep<cr>
@@ -181,11 +172,11 @@ else
     call plug#end()
 
     nmap <leader>k :NERDTree<cr>
+
+    let g:airline_theme = 'deus'
+    let g:airline#extensions#hunks#enabled=1
+    let g:airline#extensions#branch#enabled=1
 endif
-let g:airline_theme = 'deus'
-let g:airline#extensions#hunks#enabled=1
-let g:airline#extensions#branch#enabled=1
-set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
 
 let g:gitgutter_override_sign_column_highlight = 0
 highlight clear SignColumn

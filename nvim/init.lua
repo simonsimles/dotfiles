@@ -1,5 +1,9 @@
 vim.cmd [[source ~/.vimrc]]
 
+require'nvim-web-devicons'.setup({
+    default = true,
+})
+
 local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
 parser_config.markdown = {
   install_info = {
@@ -119,3 +123,9 @@ cmp.setup({
       { name = 'buffer' },
     })
 })
+
+require('gitsigns').setup({
+    numhl = true
+})
+
+require'statusline'
