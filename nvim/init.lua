@@ -31,6 +31,9 @@ require'nvim-treesitter.configs'.setup {
       node_decremental = "grm",
     },
   },
+  git = {
+    ignore = true,
+  }
 }
 
 

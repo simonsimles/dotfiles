@@ -100,7 +100,7 @@ hi Pmenu guifg=white guibg=grey10
 hi NonText gui=italic guibg=grey20 guifg=grey40
 
 if has('nvim')
-    call functions#PlugLoad()
+    "call functions#PlugLoad()
     call plug#begin("~/AppData/Local/nvim/plugged")
     Plug 'kyazdani42/nvim-web-devicons'
     Plug 'kyazdani42/nvim-tree.lua'
@@ -135,7 +135,6 @@ if has('nvim')
     set completeopt=menu,menuone,noselect
 
     let g:nvim_tree_width = 40
-    let g:nvim_tree_gitignore = 0
     let g:nvim_tree_git_hl = 0
     let g:nvim_tree_highlight_opened_files = 1
     let g:nvim_tree_show_icons = {'git': 0, 'folders': 1, 'files': 1, 'folder_arrows': 1,}
