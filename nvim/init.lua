@@ -102,6 +102,28 @@ require'lspconfig'.jsonls.setup{
     single_file_support = true
 }
 
+local function organize_imports()
+  local params = {
+    command = "_typescript.organizeImports",
+    arguments = {vim.api.nvim_buf_get_name(0)},
+    title = ""
+  }
+  vim.lsp.buf.execute_command(params)
+end
+
+require'lspconfig'.eslint.setup{
+    cmd = {"powershell", "vscode-html-language-server.ps1", "--stdio" },
+    capabilities = capabilities,
+    commands = {
+        OrganizeImports = {
+            organize_imports,
+            description = "Organize Imports"
+        }
+    }
+}
+
+require'lspconfig'.tsserver.setup{}
+
 local cmp = require'cmp'
 cmp.setup({
     snippet = {
@@ -133,3 +155,39 @@ require('gitsigns').setup({
 })
 
 require'statusline'
+
+require("mason").setup()
+require("mason-lspconfig").setup()
+local lspconfig = require("lspconfig")
+require("mason-lspconfig").setup_handlers {
+    function (server_name)
+      lspconfig[server_name].setup {}
+    end,
+    ["terraformls"] = function ()
+        lspconfig.terraformls.setup {
+            cmd = {vim.fn.exepath("terraform-ls")}
+        }
+    end,
+    ["tflint"] = function()
+        lspconfig.tflint.setup {
+            cmd = {vim.fn.exepath("tflint")}
+        }
+    end,
+}
+
+local nvim_metals_group = vim.api.nvim_create_augroup("nvim-metals", { clear = true })
+  vim.api.nvim_create_autocmd("FileType", {
+    pattern = { "scala", "sbt", "java" },
+    callback = function()
+      require("metals").initialize_or_attach({})
+    end,
+    group = nvim_metals_group,
+  })
+local metals_config = require("metals").bare_config()
+metals_config.init_options.statusBarProvider = "on"
+metals_config.settings = {
+  showImplicitArguments = true,
+  excludedPackages = { "akka.actor.typed.javadsl", "com.github.swagger.akka.javadsl" },
+}
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+metals_config.capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)

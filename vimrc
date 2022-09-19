@@ -58,6 +58,7 @@ if has("win32")
     set shellxquote=
 
     noremap <C-z> :terminal<return>
+    tnoremap <Esc> <C-\><C-n>
 endif
 
 set autoread
@@ -117,6 +118,8 @@ if has('nvim')
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
     Plug 'neovim/nvim-lspconfig'
+    Plug 'williamboman/mason.nvim'
+    Plug 'williamboman/mason-lspconfig.nvim'
 
     "Plug 'scrooloose/nerdcommenter'
     "Plug 'sbdchd/neoformat'
@@ -128,6 +131,8 @@ if has('nvim')
     Plug 'hrsh7th/nvim-cmp'
     Plug 'hrsh7th/cmp-vsnip'
     Plug 'hrsh7th/vim-vsnip'
+
+    Plug 'scalameta/nvim-metals'
 
     Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
     call plug#end()
@@ -151,16 +156,20 @@ if has('nvim')
     nnoremap <leader>ff <cmd>Telescope find_files<cr>
     nnoremap <leader>fg <cmd>Telescope live_grep<cr>
     nnoremap <leader>fb <cmd>Telescope buffers<cr>
+    nnoremap <leader>gf <cmd>Telescope git_files<cr>
     nnoremap <leader>fd <cmd>Telescope lsp_definitions<cr>
     nnoremap <leader>fr <cmd>Telescope lsp_references<cr>
     nnoremap <leader>fp <cmd>Telescope lsp_document_diagnostics<cr>
     nnoremap <leader>fa <cmd>Telescope lsp_document_symbols<cr>
     nnoremap <leader>ft <cmd>Telescope treesitter<cr>
 
-    nnoremap <leader>gD <cmd>lua vim.lsp.buf.declaration()<cr>
+    nnoremap <leader>gD <cmd>lua vim.lsp.buf.definition()<cr>
     nnoremap <leader>rn <cmd>lua vim.lsp.buf.rename()<cr>
     nnoremap <leader>gq <cmd>lua vim.lsp.buf.formatting()<cr>
     nnoremap <leader>H <cmd>lua vim.lsp.buf.hover()<cr>
+
+    command Metal lua require('telescope').extensions.metals.commands()
+    nnoremap <leader>m <cmd>Metal<cr>
 
 else
     call plug#begin()
@@ -186,3 +195,18 @@ highlight GitGutterChangeDelete guifg=orange
 
 filetype plugin on
 filetype indent on
+
+let g:firenvim_config = { 
+    \ 'globalSettings': {
+        \ 'alt': 'all',
+    \  },
+    \ 'localSettings': {
+        \ '.*': {
+            \ 'cmdline': 'neovim',
+            \ 'content': 'text',
+            \ 'priority': 0,
+            \ 'selector': 'textarea',
+            \ 'takeover': 'never',
+        \ },
+    \ }
+\ }

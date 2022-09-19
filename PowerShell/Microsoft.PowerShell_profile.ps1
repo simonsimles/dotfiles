@@ -1,4 +1,4 @@
-Set-Alias -Name nvim -Value C:\tools\neovim\Neovim\bin\nvim.exe
+Set-Alias -Name nvim -Value C:\tools\neovim\nvim-win64\bin\nvim.exe
 Set-Alias -Name vim -Value nvim
 function Start-Mutt {
     wsl "neomutt"
@@ -7,16 +7,23 @@ Set-Alias -Name mutt -Value Start-Mutt
 
 Import-Module posh-git
 
-Set-Alias -Name fcd -Value Invoke-FuzzySetLocation
+function Set-FzfLocation {
+    rg --files -g "!GrueneWolke/" | fzf | Split-Path | Set-Location
+}
+Set-Alias -Name fcd -Value Set-FzfLocation
+
+function Get-FZFFile {
+    rg --files -g "!GrueneWolke/" | fzf
+}
+Set-Alias -Name ff -Value Get-FZFFile
 
 Import-Module ~\Documents\github\cdf.ps\Cdf.psm1
 if (Get-Module Cdf) {
-    Remove-Alias cd
-    Set-Alias -Name cd -Value Set-FuzzyDirectory
+    Set-CdAlias
 }
 
 Import-Module PSReadLine
-Set-PSReadLineOption -EditMode Vi
+#Set-PSReadLineOption -EditMode Vi
 Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
 Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
 
@@ -36,3 +43,19 @@ Set-PSReadLineOption -BellStyle None
 Set-PSReadLineOption -PredictionSource HistoryAndPlugin
 Set-PSReadLineOption -PredictionViewStyle ListView
 Set-PSReadLineOption -HistorySearchCursorMovesToEnd
+Set-PSReadLineOption -Color @{"Parameter" = "Magenta"; "Operator" = "Magenta"}
+
+Import-Module Color
+$Global:ColorSettings.File.DefaultColor = "White"
+$Global:ColorSettings.File.Types.Directory.Color = "Blue"
+$Global:ColorSettings.File.Types.Hidden.Color = "Green"
+$Global:ColorSettings.File.Header.TextColor = "#D1CCCB"
+$Global:ColorSettings.File.Header.SeparatorColor = "#D1CCCB"
+$Global:ColorSettings.File.Types.Code.Color = "DarkYellow"
+
+$module_path = Get-Item $profile | Select-Object -ExpandProperty Target | foreach {
+    if ($_) {Split-Path $_} else {$PSScriptRoot}
+}
+Import-Module (Join-Path $module_path "helpers.psm1")
+Set-Alias pdfv -Value Show-PDF
+Set-Alias tail -Value Show-Tail
