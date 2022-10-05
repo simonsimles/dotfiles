@@ -140,9 +140,6 @@ if has('nvim')
     set completeopt=menu,menuone,noselect
 
     let g:nvim_tree_width = 40
-    let g:nvim_tree_git_hl = 0
-    let g:nvim_tree_highlight_opened_files = 1
-    let g:nvim_tree_show_icons = {'git': 0, 'folders': 1, 'files': 1, 'folder_arrows': 1,}
     nnoremap <leader>k :NvimTreeToggle<CR>
 
     if !empty(glob("C:/Python39/python.exe"))
