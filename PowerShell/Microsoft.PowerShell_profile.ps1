@@ -45,14 +45,6 @@ Set-PSReadLineOption -PredictionViewStyle ListView
 Set-PSReadLineOption -HistorySearchCursorMovesToEnd
 Set-PSReadLineOption -Color @{"Parameter" = "Magenta"; "Operator" = "Magenta"}
 
-Import-Module Color
-$Global:ColorSettings.File.DefaultColor = "White"
-$Global:ColorSettings.File.Types.Directory.Color = "Blue"
-$Global:ColorSettings.File.Types.Hidden.Color = "Green"
-$Global:ColorSettings.File.Header.TextColor = "#D1CCCB"
-$Global:ColorSettings.File.Header.SeparatorColor = "#D1CCCB"
-$Global:ColorSettings.File.Types.Code.Color = "DarkYellow"
-
 $module_path = Get-Item $profile | Select-Object -ExpandProperty Target | foreach {
     if ($_) {Split-Path $_} else {$PSScriptRoot}
 }
