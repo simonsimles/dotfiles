@@ -20,3 +20,5 @@ require('gitsigns').setup({numhl = true})
 
 require'statusline'
 
+require('file_types')
+

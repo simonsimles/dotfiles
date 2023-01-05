@@ -22,12 +22,12 @@ require("mason-lspconfig").setup_handlers {
     end,
     ["terraformls"] = function ()
         lspconfig.terraformls.setup {
-            cmd = {vim.fn.exepath("terraform-ls")}
+            cmd = {vim.fn.exepath("terraform-ls"), "serve"}
         }
     end,
     ["tflint"] = function()
         lspconfig.tflint.setup {
-            cmd = {vim.fn.exepath("tflint")}
+            cmd = {vim.fn.exepath("tflint"), "--langserver"}
         }
     end,
 }
