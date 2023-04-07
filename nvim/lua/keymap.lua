@@ -36,4 +36,7 @@ mapk('n', '<leader>H', '<cmd>lua vim.lsp.buf.hover()<cr>', {noremap = true})
 
 mapk('n', '<leader>m', '<cmd>lua require("telescope").extensions.metals.commands()<cr>', {noremap=true})
 
+mapk('n', '<leader>nn', '<cmd>SNotesNew<cr>', {noremap = true})
+mapk('n', '<leader>ns', '<cmd>SNotesSearch<cr>', {noremap = true})
+mapk('n', '<leader>no', '<cmd>SNotesOpen<cr>', {noremap = true})
 

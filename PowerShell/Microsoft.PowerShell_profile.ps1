@@ -5,6 +5,11 @@ function Start-Mutt {
 }
 Set-Alias -Name mutt -Value Start-Mutt
 
+function Restart-PowerToys {
+     Get-Process | Where-Object {$_.Name -eq "PowerToys"} | Select-Object -first 1 | Stop-Process
+     & 'C:\Program Files\PowerToys\PowerToys.exe'
+}
+
 Import-Module posh-git
 
 function Set-FzfLocation {
