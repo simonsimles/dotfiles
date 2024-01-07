@@ -56,3 +56,4 @@ $module_path = Get-Item $profile | Select-Object -ExpandProperty Target | foreac
 Import-Module (Join-Path $module_path "helpers.psm1")
 Set-Alias pdfv -Value Show-PDF
 Set-Alias tail -Value Show-Tail
+. (Join-Path $module_path "git_helpers.ps1")
