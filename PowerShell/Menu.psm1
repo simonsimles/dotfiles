@@ -53,7 +53,7 @@ function Get-Choice(
         Write-PromptOrFooter $legend
 
         while($true) {
-            $press = [System.Console]::ReadKey()
+            $press = [System.Console]::ReadKey($true)
             if ($press.Key -eq [System.ConsoleKey]::UpArrow -or $press.Key -eq [System.ConsoleKey]::K) {
                 $choice = ($choice - 1), 0 | Measure-Object -Maximum | Select-Object -ExpandProperty Maximum
             } elseif ($press.Key -eq [System.ConsoleKey]::DownArrow -or $press.Key -eq [System.ConsoleKey]::J) {
