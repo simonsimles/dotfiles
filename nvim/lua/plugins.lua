@@ -1,40 +1,44 @@
-vim.cmd [[packadd packer.nvim]]
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
-return require('packer').startup(function(use)
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
 
-use 'wbthomason/packer.nvim'
+require("lazy").setup({
+	
+	'kyazdani42/nvim-web-devicons',
+	'kyazdani42/nvim-tree.lua',
 
-use 'kyazdani42/nvim-web-devicons'
-use 'kyazdani42/nvim-tree.lua'
+	'feline-nvim/feline.nvim',
 
-use 'feline-nvim/feline.nvim'
+	'nvim-lua/plenary.nvim',
+	'lewis6991/gitsigns.nvim',
+	'nvim-telescope/telescope.nvim',
 
-use 'nvim-lua/plenary.nvim'
-use 'lewis6991/gitsigns.nvim'
-use 'nvim-telescope/telescope.nvim'
+	'ellisonleao/glow.nvim',
 
-use 'ellisonleao/glow.nvim'
+	{'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},
 
-use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'}
+	'neovim/nvim-lspconfig',
+	'williamboman/mason.nvim',
+	'williamboman/mason-lspconfig.nvim',
+	'scalameta/nvim-metals',
 
-use 'neovim/nvim-lspconfig'
-use 'williamboman/mason.nvim'
-use 'williamboman/mason-lspconfig.nvim'
-use 'scalameta/nvim-metals'
-
-use 'hrsh7th/cmp-nvim-lsp'
-use 'hrsh7th/cmp-buffer'
-use 'hrsh7th/cmp-path'
-use 'hrsh7th/nvim-cmp'
-use 'hrsh7th/cmp-vsnip'
-use 'hrsh7th/vim-vsnip'
-
-use 'simonsimles/snotes.nvim'
+	'hrsh7th/cmp-nvim-lsp',
+	'hrsh7th/cmp-buffer',
+	'hrsh7th/cmp-path',
+	'hrsh7th/nvim-cmp',
+	'hrsh7th/cmp-vsnip',
+	'hrsh7th/vim-vsnip',
 
 
-use {
-    'glacambre/firenvim',
-    run = function() vim.fn['firenvim#install'](0) end 
-}
-
-end)
+	{'glacambre/firenvim', build = function() vim.fn['firenvim#install'](0) end },
+})
