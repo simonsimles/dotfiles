@@ -13,32 +13,59 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-	
-	'kyazdani42/nvim-web-devicons',
-	'kyazdani42/nvim-tree.lua',
 
-	'feline-nvim/feline.nvim',
+    'kyazdani42/nvim-web-devicons',
+    'kyazdani42/nvim-tree.lua',
 
-	'nvim-lua/plenary.nvim',
-	'lewis6991/gitsigns.nvim',
-	'nvim-telescope/telescope.nvim',
+    'feline-nvim/feline.nvim',
 
-	'ellisonleao/glow.nvim',
+    'nvim-lua/plenary.nvim',
+    'lewis6991/gitsigns.nvim',
+    'nvim-telescope/telescope.nvim',
 
-	{'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},
+    'ellisonleao/glow.nvim',
 
-	'neovim/nvim-lspconfig',
-	'williamboman/mason.nvim',
-	'williamboman/mason-lspconfig.nvim',
-	'scalameta/nvim-metals',
+    {'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},
 
-	'hrsh7th/cmp-nvim-lsp',
-	'hrsh7th/cmp-buffer',
-	'hrsh7th/cmp-path',
-	'hrsh7th/nvim-cmp',
-	'hrsh7th/cmp-vsnip',
-	'hrsh7th/vim-vsnip',
+    'neovim/nvim-lspconfig',
+    'williamboman/mason.nvim',
+    'williamboman/mason-lspconfig.nvim',
+    'scalameta/nvim-metals',
+
+    'hrsh7th/cmp-nvim-lsp',
+    'hrsh7th/cmp-buffer',
+    'hrsh7th/cmp-path',
+    'hrsh7th/nvim-cmp',
+    'hrsh7th/cmp-vsnip',
+    'hrsh7th/vim-vsnip',
 
 
-	{'glacambre/firenvim', build = function() vim.fn['firenvim#install'](0) end },
+    {
+        'glacambre/firenvim',
+        lazy = not vim.g.started_by_firenvim,
+        build = function()
+            vim.fn['firenvim#install'](0)
+        end
+    },
+
+    {
+        'akinsho/toggleterm.nvim',
+        version = "*",
+        opts = {}
+    },
+
+    {
+        "folke/which-key.nvim",
+        event = "VeryLazy",
+        init = function ()
+            vim.o.timeout = true
+            vim.o.timeoutlen = 300
+        end,
+    }
 })
+
+require("toggleterm").setup{
+    open_mapping = [[<c-t>]],
+    direction = 'float',
+    shell = 'pwsh.exe',
+}
