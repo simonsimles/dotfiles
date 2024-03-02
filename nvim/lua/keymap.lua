@@ -29,7 +29,7 @@ mapk('n', '<leader>fp', '<cmd>Telescope lsp_document_diagnostics<cr>', {noremap 
 mapk('n', '<leader>fa', '<cmd>Telescope lsp_document_symbols<cr>', {noremap = true})
 mapk('n', '<leader>ft', '<cmd>Telescope treesitter<cr>', {noremap = true})
 
-mapk('n', '<leader>gD', '<cmd>lua vim.lsp.buf.definitions()<cr>', {noremap = true})
+mapk('n', '<leader>gD', '<cmd>lua vim.lsp.buf.definition()<cr>', {noremap = true})
 mapk('n', '<leader>gq', '<cmd>lua vim.lsp.buf.format()<cr>', {noremap = true})
 mapk('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<cr>', {noremap = true})
 mapk('n', '<leader>H', '<cmd>lua vim.lsp.buf.hover()<cr>', {noremap = true})
