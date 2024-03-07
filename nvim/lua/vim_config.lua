@@ -39,6 +39,8 @@ vim.opt.showmatch = true
 vim.opt.mat = 2
 vim.opt.updatetime = 300
 
+vim.opt.cursorline = true
+
 vim.opt.listchars= 'trail:·,tab:▸▸'
 vim.opt.list = true
 
