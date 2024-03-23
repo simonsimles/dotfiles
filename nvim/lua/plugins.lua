@@ -12,6 +12,8 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+local is_d_user = string.sub(vim.loop.os_getenv("USERNAME"), 1, 1) == "d"
+
 require("lazy").setup({
 
     'kyazdani42/nvim-web-devicons',
@@ -61,7 +63,12 @@ require("lazy").setup({
             vim.o.timeout = true
             vim.o.timeoutlen = 300
         end,
-    }
+    },
+
+    {
+        "github/copilot.vim",
+        enabled = is_d_user,
+    },
 })
 
 require("toggleterm").setup{
@@ -69,3 +76,16 @@ require("toggleterm").setup{
     direction = 'float',
     shell = 'pwsh.exe',
 }
+
+if is_d_user then
+    vim.cmd("Copilot enable")
+    vim.keymap.set('i', '<C-Left>', '<Plug>(copilot-accept-word)', {noremap = true})
+    vim.keymap.set('i', '<C-Right>', 'copilot#Accept("\\<CR>")', {
+        noremap = true,
+        expr = true,
+        replace_keycodes = false,
+    })
+    vim.keymap.set('i', '<C-Down>', '<Plug>(copilot-next)', {noremap = true})
+    vim.keymap.set('i', '<C-Up>', '<Plug>(copilot-previous)', {noremap = true})
+    vim.g.copilot_no_tab_map = true
+end
