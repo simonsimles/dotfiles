@@ -41,7 +41,7 @@ vim.opt.updatetime = 300
 
 vim.opt.cursorline = true
 
-vim.opt.listchars= 'trail:·,tab:▸▸'
+vim.opt.listchars= 'trail:·,tab:→→'
 vim.opt.list = true
 
 vim.opt.wildignore = ''
@@ -78,6 +78,7 @@ vim.opt.termguicolors = true
 vim.cmd("colorscheme desert")
 vim.opt.background = "dark"
 vim.cmd("hi Pmenu guifg=white guibg=grey10")
+vim.cmd([[hi NonText guibg=None guifg=black]])
 
 vim.g.gitgutter_override_sign_column_highlight = 0
 vim.cmd("highlight clear SignColumn")

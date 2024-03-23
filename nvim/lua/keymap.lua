@@ -12,8 +12,8 @@ mapk('', '<C-k>', '<C-W>k', {})
 mapk('', '<C-h>', '<C-W>h', {})
 mapk('', '<C-l>', '<C-W>l', {})
 
-vim.cmd([[inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"]])
-vim.cmd([[inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"]])
+--vim.cmd([[inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"]])
+--vim.cmd([[inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"]])
 
 mapk('', '<Space>', '/', {})
 
