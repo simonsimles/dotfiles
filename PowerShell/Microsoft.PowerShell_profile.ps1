@@ -1,4 +1,3 @@
-Set-Alias -Name nvim -Value C:\tools\neovim\nvim-win64\bin\nvim.exe
 Set-Alias -Name vim -Value nvim
 function Start-Mutt {
     wsl "neomutt"
@@ -57,3 +56,17 @@ Import-Module (Join-Path $module_path "helpers.psm1")
 Set-Alias pdfv -Value Show-PDF
 Set-Alias tail -Value Show-Tail
 . (Join-Path $module_path "git_helpers.ps1")
+. (Join-Path $module_path "preview.ps1")
+
+$env:YAZI_FILE_ONE="C:\Users\d91069\scoop\apps\git\current\usr\bin\file.exe"
+function y {
+    $tmp = [System.IO.Path]::GetTempFileName()
+    yazi $args --cwd-file="$tmp"
+    $cwd = Get-Content -Path $tmp
+    if (-not [String]::IsNullOrEmpty($cwd) -and $cwd -ne $PWD.Path) {
+        Set-Location -LiteralPath $cwd
+    }
+    Remove-Item -Path $tmp
+}
+
+Invoke-Expression (& { (zoxide init powershell | Out-String) })

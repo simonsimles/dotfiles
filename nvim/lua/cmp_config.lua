@@ -28,5 +28,7 @@ cmp.setup({
       { name = 'vsnip' },
       }, {
       { name = 'buffer' },
-    })
+    }),
+    completion = {
+    },
 })

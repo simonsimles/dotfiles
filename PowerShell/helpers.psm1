@@ -16,3 +16,26 @@ function Show-Tail(
     $amount = if ($n) {"$n"} else {"10"}
     Invoke-Expression "Get-Content -Tail $amount $wait $file"
 }
+
+function Add-ToClip {
+    [CmdletBinding()]
+    param(
+        [Parameter(
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true,
+            Position = 0
+        )] $input
+    )
+
+    Begin {
+        Set-Clipboard -Value $null
+    }
+
+    Process {
+        if ($_.GetType() -eq [System.IO.FileInfo]) {
+            Invoke-WinCommand {param($arg) Get-Item $arg | Set-Clipboard } $_
+        } else {
+            Set-Clipboard -Append $_
+        }
+    }
+}

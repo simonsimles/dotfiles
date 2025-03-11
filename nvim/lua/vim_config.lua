@@ -79,6 +79,7 @@ vim.cmd("colorscheme desert")
 vim.opt.background = "dark"
 vim.cmd("hi Pmenu guifg=white guibg=grey10")
 vim.cmd([[hi NonText guibg=None guifg=black]])
+vim.cmd("highlight CursorLine guibg=DarkOliveGreen")
 
 vim.g.gitgutter_override_sign_column_highlight = 0
 vim.cmd("highlight clear SignColumn")
