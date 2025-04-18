@@ -57,3 +57,8 @@ require("mason-lspconfig").setup_handlers {
         })
     end
 }
+
+require('lspconfig').nushell.setup{
+    cmd = { "nu", "--lsp" },
+    filetypes = { "nu" },
+}

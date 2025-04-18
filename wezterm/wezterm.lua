@@ -6,7 +6,8 @@ config.color_scheme = "Andromeda"
 config.window_background_opacity = 0.95
 config.window_decorations = "RESIZE"
 
-config.default_prog = {'pwsh'}
+--config.default_prog = {'pwsh'}
+config.default_prog = {'nu'}
 
 --config.font = wezterm.font('Cascadia Code NF', {style='Normal', weight='Regular'})
 config.font = wezterm.font('RobotoMono Nerd Font', {style='Normal', weight='Regular'})

@@ -26,6 +26,7 @@ require("lazy").setup({
     'lewis6991/gitsigns.nvim',
     'nvim-telescope/telescope.nvim',
     'nvim-telescope/telescope-media-files.nvim',
+    'nvim-telescope/telescope-ui-select.nvim',
 
     'ellisonleao/glow.nvim',
 
@@ -76,8 +77,14 @@ require("lazy").setup({
     },
 
     {
+        "CopilotC-Nvim/CopilotChat.nvim",
+        dependencies = { "github/copilot.vim" },
+        opts = {},
+    },
+
+    {
         "gennaro-tedesco/nvim-jqx",
-        event = {"BufReadPost"},
+        event = { "BufReadPost" },
         ft = { "json", "yaml" },
     },
 })
@@ -88,8 +95,8 @@ require("toggleterm").setup {
     shell = 'pwsh.exe',
 }
 
-vim.api.nvim_create_user_command("CopilotEnable",
-    function(opts)
+vim.api.nvim_create_user_command("Copilo",
+    function()
         if is_d_user then
             vim.cmd("Copilot enable")
             vim.keymap.set('i', '<C-Left>', '<Plug>(copilot-accept-word)', { noremap = true })
@@ -105,11 +112,19 @@ vim.api.nvim_create_user_command("CopilotEnable",
     end,
     { nargs = 0 })
 
-require("telescope").load_extension("media_files")
-require'telescope'.setup {
-  extensions = {
-    media_files = {
-      filetypes = {"png", "webp", "jpg", "jpeg", "svg"},
-    }
-  },
+require 'telescope'.setup {
+    extensions = {
+        ["ui-select"] = {
+            require("telescope.themes").get_dropdown {
+                -- even more opts
+            }
+        },
+        media_files = {
+            filetypes = { "png", "webp", "jpg", "jpeg", "svg" },
+        }
+    },
 }
+require("telescope").load_extension("media_files")
+require("telescope").load_extension("ui-select")
+
+
