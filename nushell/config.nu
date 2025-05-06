@@ -21,6 +21,9 @@ $env.config.shell_integration.osc133 = false
 $env.config.edit_mode = 'vi'
 $env.config.buffer_editor = 'nvim'
 
+$env.EDITOR = 'nvim'
+$env.YAZI_FILE_ONE = ($nu.home-path | path join 'scoop\apps\git\current\usr\bin\file.exe')
+
 source ~/.local/share/atuin/init.nu
 
 def --env y [...args] {
@@ -36,3 +39,5 @@ def --env y [...args] {
 source FuzzyCd.nu
 
 alias fcd = FuzzyCd
+
+source zoxide.nu

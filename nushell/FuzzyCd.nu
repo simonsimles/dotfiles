@@ -20,7 +20,7 @@ def --env FuzzyCd [pattern:string] {
             if ($fuzzyMatch | length) == 1 {
                 $buildPath = $fuzzyMatch | first | get name
             } else {
-                let nextLevel = $fuzzyMatch | input list "Choose the next folder" --fuzzy | get name
+                let nextLevel = $fuzzyMatch | input list "Choose the next folder" --fuzzy --display name | get name
                 $buildPath = $nextLevel
             }
         }
