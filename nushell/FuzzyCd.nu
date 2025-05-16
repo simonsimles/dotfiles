@@ -10,7 +10,7 @@ def --env FuzzyCd [pattern:string] {
         }
         let exactMatch = ls $buildPath | where {|s| ($s.name | path basename | str downcase) == $path}
         if ($exactMatch | length) == 1 {
-            $buildPath = $exactMatch | get name
+            $buildPath = $exactMatch | get name | first
         } else {
             let fuzzyMatch = ls $buildPath | where {|s| ($s.name | path basename | str downcase) like $path}
             if ($fuzzyMatch | is-empty) {
