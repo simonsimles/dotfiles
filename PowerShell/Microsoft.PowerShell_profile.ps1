@@ -1,8 +1,4 @@
 Set-Alias -Name vim -Value nvim
-function Start-Mutt {
-    wsl "neomutt"
-}
-Set-Alias -Name mutt -Value Start-Mutt
 
 function Restart-PowerToys {
      Get-Process | Where-Object {$_.Name -eq "PowerToys"} | Select-Object -first 1 | Stop-Process
@@ -27,7 +23,7 @@ if (Get-Module Cdf) {
 }
 
 Import-Module PSReadLine
-#Set-PSReadLineOption -EditMode Vi
+Set-PSReadLineOption -EditMode Vi
 Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
 Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
 
