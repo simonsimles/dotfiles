@@ -92,7 +92,7 @@ require("lazy").setup({
 require("toggleterm").setup {
     open_mapping = [[<c-t>]],
     direction = 'float',
-    shell = 'pwsh.exe',
+    shell = 'nu',--'pwsh.exe',
 }
 
 vim.api.nvim_create_user_command("Copilo",
