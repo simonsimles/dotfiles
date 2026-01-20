@@ -5,7 +5,8 @@ function Restart-PowerToys {
      & 'C:\Program Files\PowerToys\PowerToys.exe'
 }
 
-Import-Module posh-git
+# posh-git: defer loading until we detect a git repository to speed startup
+$global:__poshgit_initialized = $false
 
 function Set-FzfLocation {
     rg --files -g "!GrueneWolke/" | fzf | Split-Path | Set-Location
@@ -17,10 +18,12 @@ function Get-FZFFile {
 }
 Set-Alias -Name ff -Value Get-FZFFile
 
-Import-Module ~\Documents\github\cdf.ps\Cdf.psm1
-if (Get-Module Cdf) {
-    Set-CdAlias
-}
+# Only import the local Cdf module if it exists to avoid costly module resolution
+$cdfPath = Join-Path $HOME 'Documents\github\cdf.ps\Cdf.psm1'
+if (Test-Path $cdfPath) { Import-Module $cdfPath }
+#if (Get-Module Cdf) {
+    # Set-CdAlias
+#}
 
 Import-Module PSReadLine
 Set-PSReadLineOption -EditMode Vi
@@ -45,14 +48,14 @@ Set-PSReadLineOption -PredictionViewStyle ListView
 Set-PSReadLineOption -HistorySearchCursorMovesToEnd
 Set-PSReadLineOption -Color @{"Parameter" = "Magenta"; "Operator" = "Magenta"}
 
-$module_path = Get-Item $profile | Select-Object -ExpandProperty Target | foreach {
-    if ($_) {Split-Path $_} else {$PSScriptRoot}
-}
-Import-Module (Join-Path $module_path "helpers.psm1")
-Set-Alias pdfv -Value Show-PDF
-Set-Alias tail -Value Show-Tail
-. (Join-Path $module_path "git_helpers.ps1")
-. (Join-Path $module_path "preview.ps1")
+#$module_path = Get-Item $profile | Select-Object -ExpandProperty Target | foreach {
+#    if ($_) {Split-Path $_} else {$PSScriptRoot}
+#}
+#Import-Module (Join-Path $module_path "helpers.psm1")
+#Set-Alias pdfv -Value Show-PDF
+#Set-Alias tail -Value Show-Tail
+#. (Join-Path $module_path "git_helpers.ps1")
+#. (Join-Path $module_path "preview.ps1")
 
 $env:YAZI_FILE_ONE="C:\Users\d91069\scoop\apps\git\current\usr\bin\file.exe"
 function y {
@@ -65,4 +68,46 @@ function y {
     Remove-Item -Path $tmp
 }
 
-Invoke-Expression (& { (zoxide init powershell | Out-String) })
+# Defer starship and zoxide initialization until the first prompt to speed up
+# profile sourcing. On first prompt call we'll initialize them and then call
+# the (possibly newly-defined) prompt function.
+$global:__starship_initialized = $false
+$global:__zoxide_initialized = $false
+
+function global:prompt {
+    if (-not $global:__starship_initialized) {
+        if (Get-Command starship -ErrorAction SilentlyContinue) {
+            try { Invoke-Expression (&starship init powershell) } catch { }
+        }
+        $global:__starship_initialized = $true
+        # If starship replaced the prompt function, call it now.
+        if ((Get-Command prompt -ErrorAction SilentlyContinue).CommandType -eq 'Function') {
+            return & prompt
+        }
+    }
+
+    if (-not $global:__zoxide_initialized) {
+        if (Get-Command zoxide -ErrorAction SilentlyContinue) {
+            try { Invoke-Expression (& { (zoxide init powershell | Out-String) }) } catch { }
+        }
+        $global:__zoxide_initialized = $true
+    }
+
+    # Initialize posh-git lazily: if we're in a git repo and posh-git isn't loaded,
+    # import it. This avoids the import cost at every shell startup.
+    if (-not $global:__poshgit_initialized) {
+        try {
+            git rev-parse --is-inside-work-tree > $null 2>&1
+            $isGitRepo = $LASTEXITCODE -eq 0
+        } catch {
+            $isGitRepo = $false
+        }
+        if ($isGitRepo -and (Get-Module -ListAvailable -Name posh-git)) {
+            try { Import-Module posh-git -ErrorAction SilentlyContinue } catch { }
+        }
+        $global:__poshgit_initialized = $true
+    }
+
+    # Fallback simple prompt until a richer prompt is available.
+    return "PS $($executionContext.SessionState.Path.CurrentLocation)> "
+}
