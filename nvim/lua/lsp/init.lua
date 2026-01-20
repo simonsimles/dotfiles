@@ -77,51 +77,64 @@ vim.lsp.enable('jsonls')
 
 vim.lsp.enable('kotlin_language_server')
 
-local lspconfig = vim.lsp.config
-require("mason").setup()
-require("mason-lspconfig").setup {
-    handlers = {
+-- mason setup will be performed when this module is loaded lazily
+local function setup_mason()
+  local ok1, mason = pcall(require, 'mason')
+  if ok1 and mason and type(mason.setup) == 'function' then pcall(mason.setup) end
+  local ok2, mlsp = pcall(require, 'mason-lspconfig')
+  if ok2 and mlsp and type(mlsp.setup) == 'function' then
+    mlsp.setup {
+      handlers = {
+        -- Default handler
         function(server_name)
-            lspconfig[server_name].setup {}
+          if vim.lsp.config[server_name] then
+            vim.lsp.config[server_name].setup {}
+          end
         end,
+        -- terraform special case
         ["terraformls"] = function()
-            lspconfig('terraformls', {
-                cmd = { vim.fn.exepath("terraform-ls"), "serve" }
+          if vim.lsp.config then
+            vim.lsp.config('terraformls', {
+              cmd = { vim.fn.exepath("terraform-ls"), "serve" }
             })
+          end
         end,
+        -- tflint special case
         ["tflint"] = function()
-            lspconfig('tflint', {
-                cmd = { vim.fn.exepath("tflint"), "--langserver" }
+          if vim.lsp.config then
+            vim.lsp.config('tflint', {
+              cmd = { vim.fn.exepath("tflint"), "--langserver" }
             })
+          end
         end,
+        -- lua_ls special case
         ["lua_ls"] = function()
-            local runtime_path = vim.split(package.path, ";")
-            table.insert(runtime_path, "lua/?.lua")
-            table.insert(runtime_path, "lua/?/init.lua")
+          local runtime_path = vim.split(package.path, ";")
+          table.insert(runtime_path, "lua/?.lua")
+          table.insert(runtime_path, "lua/?/init.lua")
 
-            lspconfig('lua_ls', {
-                settings = {
-                    Lua = {
-                        runtime = {
-                            version = "LuaJIT",
-                            path = runtime_path,
-                        },
-                        diagnostics = {
-                            globals = { "vim" },
-                        },
-                        workspace = {
-                            library = vim.api.nvim_get_runtime_file("", true),
-                            checkThirdParty = false,
-                        },
-                        telemetry = {
-                            enable = false,
-                        },
-                    },
+          if vim.lsp.config then
+            vim.lsp.config('lua_ls', {
+              settings = {
+                Lua = {
+                  runtime = { version = "LuaJIT", path = runtime_path },
+                  diagnostics = { globals = { "vim" } },
+                  workspace = { library = vim.api.nvim_get_runtime_file("", true), checkThirdParty = false },
+                  telemetry = { enable = false },
                 },
+              },
             })
-        end
+          end
+        end,
+      }
     }
-}
+  end
+end
+
+setup_mason()
+
+local lspconfig = vim.lsp.config
+-- mason and mason-lspconfig setup moved to lazy-loaded module to avoid startup blocking
 
 vim.lsp.config('nushell', {
     cmd = { "nu", "--lsp" },

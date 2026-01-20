@@ -16,39 +16,61 @@ local is_d_user = string.sub(vim.loop.os_getenv("USERNAME"), 1, 1) == "d"
 
 require("lazy").setup({
 
-    'kyazdani42/nvim-web-devicons',
-    'kyazdani42/nvim-tree.lua',
+    { 'kyazdani42/nvim-web-devicons', lazy = true, module = 'nvim-web-devicons' },
+    {
+        'kyazdani42/nvim-tree.lua',
+        cmd = { 'NvimTreeToggle', 'NvimTreeFindFile' },
+        module = 'nvim-tree',
+        config = function()
+            require('nvim-tree').setup {}
+        end,
+    },
 
-    'nvim-lualine/lualine.nvim',
+    { 'nvim-lualine/lualine.nvim', event = 'VimEnter' },
 
-    'nvim-lua/plenary.nvim',
-    'nvim-lua/popup.nvim',
-    'lewis6991/gitsigns.nvim',
-    'nvim-telescope/telescope.nvim',
-    'nvim-telescope/telescope-media-files.nvim',
-    'nvim-telescope/telescope-ui-select.nvim',
+    { 'nvim-lua/plenary.nvim', lazy = true },
+    { 'nvim-lua/popup.nvim', lazy = true },
+    { 'lewis6991/gitsigns.nvim', event = 'BufReadPre' },
+    { 'nvim-telescope/telescope.nvim', cmd = 'Telescope', module = 'telescope',
+      requires = { 'nvim-lua/plenary.nvim' },
+      config = function()
+          require('telescope').setup {
+              extensions = {
+                  ["ui-select"] = { require("telescope.themes").get_dropdown() },
+                  media_files = { filetypes = { "png", "webp", "jpg", "jpeg", "svg" }, },
+              },
+          }
+          pcall(require('telescope').load_extension, 'media_files')
+          pcall(require('telescope').load_extension, 'ui-select')
+      end,
+    },
+
+    { 'nvim-telescope/telescope-media-files.nvim', after = 'telescope.nvim' },
+    { 'nvim-telescope/telescope-ui-select.nvim', after = 'telescope.nvim' },
 
     'ellisonleao/glow.nvim',
 
-    { 'nvim-treesitter/nvim-treesitter', build = ':TSUpdate' },
+    { 'nvim-treesitter/nvim-treesitter', event = 'BufReadPre' },
 
-    'neovim/nvim-lspconfig',
-    'williamboman/mason.nvim',
-    'williamboman/mason-lspconfig.nvim',
-    'scalameta/nvim-metals',
+    { 'neovim/nvim-lspconfig', event = 'BufReadPre' },
+    { 'williamboman/mason.nvim', cmd = 'Mason' },
+    { 'williamboman/mason-lspconfig.nvim', cmd = 'Mason' },
+    { 'scalameta/nvim-metals', ft = { 'scala', 'sbt' }, cmd = 'Metals' },
 
-    'hrsh7th/cmp-nvim-lsp',
-    'hrsh7th/cmp-buffer',
-    'hrsh7th/cmp-path',
-    'hrsh7th/nvim-cmp',
-    'hrsh7th/cmp-vsnip',
-    'hrsh7th/vim-vsnip',
+    { 'hrsh7th/cmp-nvim-lsp', event = 'InsertEnter' },
+    { 'hrsh7th/cmp-buffer', event = 'InsertEnter' },
+    { 'hrsh7th/cmp-path', event = 'InsertEnter' },
+    { 'hrsh7th/nvim-cmp', event = 'InsertEnter' },
+    { 'hrsh7th/cmp-vsnip', event = 'InsertEnter' },
+    { 'hrsh7th/vim-vsnip', event = 'InsertEnter' },
 
 
     {
         'akinsho/toggleterm.nvim',
         version = "*",
-        opts = {}
+        cmd = { 'ToggleTerm', 'ToggleTermToggleAll' },
+        opts = { open_mapping = [[<c-t>]], direction = 'float', shell = 'pwsh.exe' },
+        config = function(_, opts) require('toggleterm').setup(opts) end,
     },
 
     {
@@ -63,6 +85,7 @@ require("lazy").setup({
     {
         "github/copilot.vim",
         enabled = is_d_user,
+        event = 'InsertEnter',
         config = function()
             vim.cmd("Copilot disable")
         end,
@@ -71,6 +94,7 @@ require("lazy").setup({
     {
         "CopilotC-Nvim/CopilotChat.nvim",
         dependencies = { "github/copilot.vim" },
+        cmd = { 'CopilotChat', 'Copilot' },
         opts = {},
     },
 
@@ -118,5 +142,4 @@ require 'telescope'.setup {
 }
 require("telescope").load_extension("media_files")
 require("telescope").load_extension("ui-select")
-
 
