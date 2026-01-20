@@ -95,21 +95,4 @@ vim.g.python3_host_prog = "C:\\Python39\\python.exe"
 vim.cmd("filetype plugin on")
 vim.cmd("filetype indent on")
 
-vim.cmd([[
-let g:firenvim_config = { 
-    \ 'globalSettings': {
-        \ 'alt': 'all',
-    \  },
-    \ 'localSettings': {
-        \ '.*': {
-            \ 'cmdline': 'neovim',
-            \ 'content': 'text',
-            \ 'priority': 0,
-            \ 'selector': 'textarea',
-            \ 'takeover': 'never',
-        \ },
-    \ }
-\ }
-]])
-
 

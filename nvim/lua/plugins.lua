@@ -19,7 +19,7 @@ require("lazy").setup({
     'kyazdani42/nvim-web-devicons',
     'kyazdani42/nvim-tree.lua',
 
-    'feline-nvim/feline.nvim',
+    'nvim-lualine/lualine.nvim',
 
     'nvim-lua/plenary.nvim',
     'nvim-lua/popup.nvim',
@@ -44,14 +44,6 @@ require("lazy").setup({
     'hrsh7th/cmp-vsnip',
     'hrsh7th/vim-vsnip',
 
-
-    {
-        'glacambre/firenvim',
-        lazy = not vim.g.started_by_firenvim,
-        build = function()
-            vim.fn['firenvim#install'](0)
-        end
-    },
 
     {
         'akinsho/toggleterm.nvim',
@@ -92,7 +84,7 @@ require("lazy").setup({
 require("toggleterm").setup {
     open_mapping = [[<c-t>]],
     direction = 'float',
-    shell = 'nu',--'pwsh.exe',
+    shell = 'pwsh.exe',
 }
 
 vim.api.nvim_create_user_command("Copilo",

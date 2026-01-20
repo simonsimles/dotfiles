@@ -95,23 +95,27 @@ table.insert(components.active[4], {
     provider = 'diagnostic_info',
 })
 
-require('feline').setup({
-    components = components,
-    vi_mode_colors = {
-        NORMAL = 'OliveDrab',
-        OP = 'OliveDrab',
-        INSERT = 'DarkGoldenrod3',
-        VISUAL = 'skyblue',
-        LINES = 'skyblue',
-        BLOCK = 'skyblue',
-        REPLACE = 'violet',
-        ['V-REPLACE'] = 'violet',
-        ENTER = 'cyan',
-        MORE = 'cyan',
-        SELECT = 'goldenrod2',
-        COMMAND = 'OliveDrab',
-        SHELL = 'OliveDrab',
-        TERM = 'OliveDrab',
-        NONE = 'yellow',
-    }
-})
+
+--require('feline').setup({
+--    components = components,
+--    vi_mode_colors = {
+--        NORMAL = 'OliveDrab',
+--        OP = 'OliveDrab',
+--        INSERT = 'DarkGoldenrod3',
+--        VISUAL = 'skyblue',
+--        LINES = 'skyblue',
+--        BLOCK = 'skyblue',
+--        REPLACE = 'violet',
+--        ['V-REPLACE'] = 'violet',
+--        ENTER = 'cyan',
+--        MORE = 'cyan',
+--        SELECT = 'goldenrod2',
+--        COMMAND = 'OliveDrab',
+--        SHELL = 'OliveDrab',
+--        TERM = 'OliveDrab',
+--        NONE = 'yellow',
+--    }
+--})
+
+require('lualine').setup {
+}
